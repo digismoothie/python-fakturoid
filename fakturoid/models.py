@@ -141,7 +141,7 @@ class AbstractInvoice(Model):
     def serialize_field_value(self, field, value):
         result = super(AbstractInvoice, self).serialize_field_value(field, value)
         if field == 'lines':
-            ids = map(lambda l: l.get('id'), result)
+            ids = set(d['id'] for d in result if d.get('id'))
             for remote in self._loaded_lines:
                 if remote['id'] not in ids:
                     remote['_destroy'] = True
